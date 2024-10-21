@@ -1,0 +1,17 @@
+{
+  "name": "lalafo_searchtest",
+  "version": "1.0.0",
+  "description": "Lalafo search filtering test in JS",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Kamila Kamieva",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "playwright": "^1.48.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.7.5"
+  }
+}
