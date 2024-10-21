@@ -1,30 +1,55 @@
-import { test, expect } from '@playwright/test';
+import { chromium, Browser, Page } from 'playwright';
 
-test.describe('Search filtering', () => {
-    test('Check', async ({ page }) => {
-        await page.goto('https://lalafo.kg/');
-        
-        // Заполнение поля поиска
-        await page.locator('input[type="text"].search-input[placeholder="Я ищу..."]').fill('Офисные столы');
-        
-        // Клик по кнопке поиска
-        await page.locator('button[type="button"].search-input-button').click();
-        
-        // Ожидание заголовков объявлений
-        await page.waitForSelector('.ad-tile-horizontal-header-link-title', { timeout: 20000, state: 'visible' });
-        
-        // Проверка, сколько объявлений загружено
-        const adsCount = await page.locator('.ad-tile-horizontal-header-link-title').count();
-        console.log(`Количество загруженных объявлений: ${adsCount}`);
+describe('Ozon Favorites Functionality', () => {
+  let browser: Browser;
+  let page: Page;
 
-        // Заполнение цен
-        await page.locator('input[type="number"].LFInput__input[placeholder="Цена от"]').fill('5000');
-        await page.locator('input[type="number"].LFInput__input[placeholder="Цена до"]').fill('15000');
-        
-        // Клик по кнопке фильтрации
-        await page.locator('button[type="button"].LFButton.medium.primary-green').click();
+  // Перед каждым тестом запускаем браузер и открываем страницу
+  beforeAll(async () => {
+    browser = await chromium.launch({ headless: false });
+    page = await browser.newPage();
+    await page.goto('https://www.ozon.ru/');
+  });
 
-     
-        await page.waitForTimeout(20000);
-    });
+  // После каждого теста закрываем браузер
+  afterAll(async () => {
+    await browser.close();
+  });
+
+  test('Add item to favorites', async () => {
+    // Логин в аккаунт (логин и пароль нужно заменить на реальные данные)
+    await page.click('text=Войти'); // Кликаем по кнопке "Войти"
+    await page.fill('input[name="login"]', 'your-email@example.com'); // Заполняем поле email
+    await page.fill('input[name="password"]', 'your-password'); // Заполняем поле пароль
+    await page.click('text=Войти'); // Нажимаем на кнопку "Войти"
+
+    // Поиск товара
+    await page.fill('input[placeholder="Искать на Ozon"]', 'ноутбук');
+    await page.click('text=Найти'); // Кликаем по кнопке "Найти"
+
+    // Кликаем по первому товару в списке
+    await page.click('.a0c4 a[data-widget="productCard"]');
+
+    // Добавляем товар в избранное
+    await page.click('button[aria-label="Добавить в избранное"]');
+
+    // Переход в раздел "Избранное"
+    await page.goto('https://www.ozon.ru/my/favorites');
+
+    // Проверяем, что товар добавлен в избранное
+    const favoriteItem = await page.$('.a0c4 a[data-widget="productCard"]');
+    expect(favoriteItem).not.toBeNull();
+  });
+
+  test('Remove item from favorites', async () => {
+    // Переход в раздел "Избранное"
+    await page.goto('https://www.ozon.ru/my/favorites');
+
+    // Удаляем товар из избранного
+    await page.click('button[aria-label="Удалить из избранного"]');
+
+    // Проверяем, что товар удален
+    const favoriteItem = await page.$('.a0c4 a[data-widget="productCard"]');
+    expect(favoriteItem).toBeNull();
+  });
 });

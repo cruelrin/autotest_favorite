@@ -1,5 +1,5 @@
 {
-  "name": "lalafo_searchtest",
+  "name": "ozon_favoritetest",
   "version": "1.0.0",
   "description": "Lalafo search filtering test in JS",
   "main": "index.js",
@@ -7,11 +7,12 @@
   "author": "Kamila Kamieva",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "playwright": "^1.48.0"
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
-    "@types/node": "^22.7.5"
+    "@types/node": "^22.7.5",
+    "playwright": "^1.48.1",
+    "typescript": "^5.6.3"
   }
 }
