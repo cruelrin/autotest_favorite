@@ -1,55 +1,47 @@
-import { chromium, Browser, Page } from 'playwright';
+import { test, expect } from '@playwright/test';
 
-describe('Ozon Favorites Functionality', () => {
-  let browser: Browser;
-  let page: Page;
+test.describe('Ozon Favorites Functionality', () => {
+    test('Add item to favorites', async ({ page }) => {
+        // Переход на главную страницу Ozon
+        await page.goto('https://www.ozon.ru/');
 
-  // Перед каждым тестом запускаем браузер и открываем страницу
-  beforeAll(async () => {
-    browser = await chromium.launch({ headless: false });
-    page = await browser.newPage();
-    await page.goto('https://www.ozon.ru/');
-  });
+        // Заполнение поля поиска
+        await page.locator('input[placeholder="Искать на Ozon"]').fill('ноутбук');
 
-  // После каждого теста закрываем браузер
-  afterAll(async () => {
-    await browser.close();
-  });
+        // Клик по кнопке поиска
+        await page.locator('button[type="button"]:has-text("Найти")').click();
 
-  test('Add item to favorites', async () => {
-    // Логин в аккаунт (логин и пароль нужно заменить на реальные данные)
-    await page.click('text=Войти'); // Кликаем по кнопке "Войти"
-    await page.fill('input[name="login"]', 'your-email@example.com'); // Заполняем поле email
-    await page.fill('input[name="password"]', 'your-password'); // Заполняем поле пароль
-    await page.click('text=Войти'); // Нажимаем на кнопку "Войти"
+        // Ожидание результатов поиска
+        await page.waitForSelector('.a0c4 a[data-widget="productCard"]', { timeout: 20000 });
 
-    // Поиск товара
-    await page.fill('input[placeholder="Искать на Ozon"]', 'ноутбук');
-    await page.click('text=Найти'); // Кликаем по кнопке "Найти"
+        // Выбор первого товара в результатах поиска
+        await page.locator('.a0c4 a[data-widget="productCard"]').first().click();
 
-    // Кликаем по первому товару в списке
-    await page.click('.a0c4 a[data-widget="productCard"]');
+        // Добавление товара в избранное
+        await page.waitForSelector('button[aria-label="Добавить в избранное"]');
+        await page.locator('button[aria-label="Добавить в избранное"]').click();
 
-    // Добавляем товар в избранное
-    await page.click('button[aria-label="Добавить в избранное"]');
+        // Переход в раздел "Избранное"
+        await page.goto('https://www.ozon.ru/my/favorites');
 
-    // Переход в раздел "Избранное"
-    await page.goto('https://www.ozon.ru/my/favorites');
+        // Проверка, что товар добавлен в избранное
+        const favoriteItem = await page.locator('.a0c4 a[data-widget="productCard"]');
+        expect(await favoriteItem.count()).toBeGreaterThan(0); // Проверяем, что хотя бы один товар есть в избранном
 
-    // Проверяем, что товар добавлен в избранное
-    const favoriteItem = await page.$('.a0c4 a[data-widget="productCard"]');
-    expect(favoriteItem).not.toBeNull();
-  });
+        // Дополнительная проверка (например, имя товара)
+        const itemName = await favoriteItem.first().innerText();
+        console.log(`Добавленный товар в избранном: ${itemName}`);
+    });
 
-  test('Remove item from favorites', async () => {
-    // Переход в раздел "Избранное"
-    await page.goto('https://www.ozon.ru/my/favorites');
+    test('Remove item from favorites', async ({ page }) => {
+        // Переход в раздел "Избранное"
+        await page.goto('https://www.ozon.ru/my/favorites');
 
-    // Удаляем товар из избранного
-    await page.click('button[aria-label="Удалить из избранного"]');
+        // Удаление товара из избранного
+        await page.locator('button[aria-label="Удалить из избранного"]').first().click();
 
-    // Проверяем, что товар удален
-    const favoriteItem = await page.$('.a0c4 a[data-widget="productCard"]');
-    expect(favoriteItem).toBeNull();
-  });
+        // Проверка, что товар удален
+        const favoriteItem = await page.locator('.a0c4 a[data-widget="productCard"]');
+        expect(await favoriteItem.count()).toBe(0); // Убедимся, что товаров в избранном больше нет
+    });
 });
