@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "76391a44-e203-404a-8119-e60c999e1f97",
+		"name": "Ozon Favorites",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39834122"
+	},
+	"item": [
+		{
+			"name": "summary",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.ozon.ru/api/composer-api.bx/_action/summary",
+					"protocol": "https",
+					"host": [
+						"www",
+						"ozon",
+						"ru"
+					],
+					"path": [
+						"api",
+						"composer-api.bx",
+						"_action",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "favoriteBatchAddItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains added items\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"result\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 151874872,\r\n  \"name\": \"\",\r\n  \"price\": 411,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 136,\r\n  \"totalPrice\": 136,\r\n  \"eGiftCardUid\": \"\"\r\n}\r\n\r\n{\r\n  \"id\": 788385317,\r\n  \"name\": \"\",\r\n  \"price\": 5171,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 449,\r\n  \"totalPrice\": 449,\r\n  \"eGiftCardUid\": \"\"\r\n}\r\n\r\n{\r\n  \"id\": 788670862,\r\n  \"name\": \"\",\r\n  \"price\": 4389,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 485,\r\n  \"totalPrice\": 485,\r\n  \"eGiftCardUid\": \"\"\r\n}{\r\n  \"id\": 1314306091,\r\n  \"name\": \"\",\r\n  \"price\": 3615,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 1047,\r\n  \"totalPrice\": 1047,\r\n  \"eGiftCardUid\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/composer-api.bx/_action/favoriteBatchAddItems",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"composer-api.bx",
+						"_action",
+						"favoriteBatchAddItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "favoriteBatchDeleteItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response confirms deletion\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"result\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 151874872,\r\n  \"name\": \"\",\r\n  \"price\": 411,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 136,\r\n  \"totalPrice\": 136,\r\n  \"eGiftCardUid\": \"\"\r\n}\r\n\r\n{\r\n  \"id\": 788385317,\r\n  \"name\": \"\",\r\n  \"price\": 5171,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 449,\r\n  \"totalPrice\": 449,\r\n  \"eGiftCardUid\": \"\"\r\n}\r\n\r\n{\r\n  \"id\": 788670862,\r\n  \"name\": \"\",\r\n  \"price\": 4389,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 485,\r\n  \"totalPrice\": 485,\r\n  \"eGiftCardUid\": \"\"\r\n}{\r\n  \"id\": 1314306091,\r\n  \"name\": \"\",\r\n  \"price\": 3615,\r\n  \"quantity\": 1,\r\n  \"cart\": \"ozon\",\r\n  \"discountPrice\": 1047,\r\n  \"totalPrice\": 1047,\r\n  \"eGiftCardUid\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.ozon.ru/api/composer-api.bx/_action/favoriteBatchDeleteItems",
+					"protocol": "https",
+					"host": [
+						"www",
+						"ozon",
+						"ru"
+					],
+					"path": [
+						"api",
+						"composer-api.bx",
+						"_action",
+						"favoriteBatchDeleteItems"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{base_url}}",
+			"value": "https://www.ozon.ru",
+			"type": "string"
+		},
+		{
+			"key": "{{favorites_endpoint}}",
+			"value": "/api/composer-api.bx/_action/favoriteBatchAddItems",
+			"type": "string"
+		}
+	]
+}
