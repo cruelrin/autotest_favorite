@@ -13,8 +13,10 @@ test.describe('Ozon Favorites Functionality', () => {
         await homePage.navigate();
         await homePage.searchProduct('ноутбук');
 
+        // Ожидание, пока первый товар из результатов поиска не станет доступен
+        await page.waitForSelector('.a0c4 a[data-widget="productCard"]', { timeout: 10000 });
+
         // Выбор первого товара из результатов поиска и добавление в избранное
-        await page.waitForSelector('.a0c4 a[data-widget="productCard"]');
         await page.locator('.a0c4 a[data-widget="productCard"]').first().click();
         await productPage.addToFavorites();
 

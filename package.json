@@ -4,7 +4,8 @@
   "description": "ozon favorites test in JS",
   "main": "index.js",
   "scripts": {
-    "newman-run-report": "newman run postman/OzonFavorites.postman_collection.json -r htmlextra --reporter-htmlextra-export ./postman/report.html"
+    "newman-run-report": "newman run postman/OzonFavorites.postman_collection.json -r htmlextra --reporter-htmlextra-export ./postman/report.html",
+    "test": "npx playwright test" 
   },
   "author": "Sheveleva Karina",
   "license": "ISC",
