@@ -4,17 +4,31 @@ test.describe('Ozon API Favorites Tests', () => {
     const baseUrl = 'https://www.ozon.ru/api/composer-api.bx';
 
     test('Add product to favorites via API', async ({ request }) => {
-        const loginResponse = await request.post(`${baseUrl}/login`, {
-            data: {
-                username: 'user@example.com',
-                password: 'secure_password',
-            },
-        });
+        // Логин через правильный эндпоинт
+        const loginResponse = await request.post(
+            `${baseUrl}/widget/json/v2?widgetStateId=loginOrRegistration-340567-default-1`,
+            {
+                data: {
+                    username: 'sheveleva_k@iuca.kg', 
+                    password: 'djoy1364',  
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-requested-with': 'XMLHttpRequest', 
+                },
+            }
+        );
+
+        // Проверка успешного логина
         expect(loginResponse.ok()).toBeTruthy();
 
+        // Получаем токен из ответа
         const authToken = (await loginResponse.json()).token;
 
-        const productId = '1697092279'; // Замените на ID тестового продукта
+       
+        const productId = '1763436170'; 
+
+        // Запрос на добавление товара в избранное
         const addToFavoritesResponse = await request.post(`${baseUrl}/favorites/add`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -24,22 +38,30 @@ test.describe('Ozon API Favorites Tests', () => {
             },
         });
 
+        // Проверка успешности добавления товара
         expect(addToFavoritesResponse.ok()).toBeTruthy();
         expect((await addToFavoritesResponse.json()).status).toBe('success');
     });
 
     test('Remove product from favorites via API', async ({ request }) => {
-        const loginResponse = await request.post(`${baseUrl}/login`, {
-            data: {
-                username: 'user@example.com',
-                password: 'secure_password',
-            },
-        });
+        const loginResponse = await request.post(
+            `${baseUrl}/widget/json/v2?widgetStateId=loginOrRegistration-340567-default-1`,
+            {
+                data: {
+                    username: 'sheveleva_k@iuca.kg', // замените на реальные данные
+                    password: 'djoy1364',  // замените на реальные данные
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-requested-with': 'XMLHttpRequest',
+                },
+            }
+        );
         expect(loginResponse.ok()).toBeTruthy();
 
         const authToken = (await loginResponse.json()).token;
 
-        const productId = '1697092279'; 
+        const productId = '1763436170'; // замените на ID тестового товара
         const removeFromFavoritesResponse = await request.post(`${baseUrl}/favorites/remove`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -54,12 +76,19 @@ test.describe('Ozon API Favorites Tests', () => {
     });
 
     test('Get all favorite products via API', async ({ request }) => {
-        const loginResponse = await request.post(`${baseUrl}/login`, {
-            data: {
-                username: 'user@example.com',
-                password: 'secure_password',
-            },
-        });
+        const loginResponse = await request.post(
+            `${baseUrl}/widget/json/v2?widgetStateId=loginOrRegistration-340567-default-1`,
+            {
+                data: {
+                    username: 'sheveleva_k@iuca.kg', // замените на реальные данные
+                    password: 'djoy1364',  // замените на реальные данные
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-requested-with': 'XMLHttpRequest',
+                },
+            }
+        );
         expect(loginResponse.ok()).toBeTruthy();
 
         const authToken = (await loginResponse.json()).token;
